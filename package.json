@@ -1,0 +1,27 @@
+{
+  "name": "employee-managment-system",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CastroAlejandro/employee-managment-system.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CastroAlejandro/employee-managment-system/issues"
+  },
+  "homepage": "https://github.com/CastroAlejandro/employee-managment-system#readme",
+  "dependencies": {
+    "asciiart-logo": "^0.2.6",
+    "console.table": "^0.10.0",
+    "inquirer": "^7.3.3",
+    "logo": "^0.2.0",
+    "mysql": "^2.18.1"
+  }
+}
