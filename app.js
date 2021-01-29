@@ -80,19 +80,19 @@ function loadMainMenu() {
 		.then(function(answer) {
 			switch (answer.choice) {
 				case "VIEW_EMPLOYEES":
-					return viewEmployee();
+					return viewEmployees();
 				case "VIEW_EMPLOYEES_BY_MANAGER":
-					return viewEmployeeByManager();
+					return viewEmployeesByManager();
 				case "ADD_EMPLOYEES":
-					return addEmployee();
+					return addEmployees();
 				case "DELETE_EMPLOYEES":
-					return deleteEmployee();
+					return deleteEmployees();
 				case "VIEW_DEPARTMENTS":
 					return viewDepartments();
 				case "ADD_DEPARTMENTS": 
 					return addDepartments();
 				case "DELETE_DEPARTMENTS":
-					return addEmployee();
+					return addEmployees();
 				case "ADD_ROLES":
 					return addRoles();
 				case "VIEW_ROLES":
@@ -111,8 +111,33 @@ function loadMainMenu() {
 		})
 }
 
-function viewEmployee() {
-	
+async function viewEmployees() {
+	const employees = await db.findEmployees();
+	console.log("\n")
+	console.table(employees);
+	loadMainMenu();
 }
+
+async function viewEmployeesByManager() {
+	console.log("view employees by manager")
+}
+
+async function addEmployees() {
+	console.log("add employees")
+
+}
+
+async function deleteEmployees() {
+	console.log("delete employees")
+}
+
+async function deleteEmployees() {
+	console.log("hello")
+}
+
+
+
+
+
 
 init();
