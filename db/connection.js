@@ -15,9 +15,13 @@ const connection = mysql.createConnection({
 	database: "employees"
   });
   
-  connection.connect(function(err) {
-	  if (err) throw err;
-	console.log("connected as id " + connection.threadId + "\n");
-  });
+connection.connect();
+
+//   connection.connect(function(err) {
+// 	  if (err) throw err;
+// 	console.log("connected as id " + connection.threadId + "\n");
+//   });
+  
+connection.query = util.promisify(connection.query)
   
 module.exports = connection;
