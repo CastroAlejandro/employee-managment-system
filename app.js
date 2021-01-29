@@ -77,7 +77,38 @@ function loadMainMenu() {
 				 ]
 			}
 		])
-		
+		.then(function(answer) {
+			switch (answer.choice) {
+				case "VIEW_EMPLOYEES":
+					return viewEmployee();
+				case "VIEW_EMPLOYEES_BY_MANAGER":
+					return viewEmployeeByManager();
+				case "ADD_EMPLOYEES":
+					return addEmployee();
+				case "DELETE_EMPLOYEES":
+					return deleteEmployee();
+				case "VIEW_DEPARTMENTS":
+					return viewDepartments();
+				case "ADD_DEPARTMENTS": 
+					return addDepartments();
+				case "DELETE_DEPARTMENTS":
+					return addEmployee();
+				case "ADD_ROLES":
+					return addRoles();
+				case "VIEW_ROLES":
+					return viewRoles();
+				case "DELETE_ROLES":
+					return deleteRoles();
+				case "UPDATE_EMPLOYEE_ROLES":
+					return updateRoles();
+				case "UPDATE_EMPLOYEE_MANAGER":
+					return updateEmployeeManager();
+				case "VIEW_BUDGET":
+					return console.log("hello");
+				case "EXIT":
+					return connection.end();
+			}
+		})
 }
 
 function viewEmployee() {
