@@ -140,7 +140,20 @@ async function viewDepartments() {
 }
 
 async function addDepartments() {
-	console.log("add departments")
+	const addDept = await db.findDepartments();
+	console.table(addDept)
+	inquirer
+		.prompt([
+			{
+				name: "choice",
+				type: "input",
+				message: "What is the name of the new department?"
+			}
+		])
+		.then(answer => {
+			const newDept = db.newDepartments(answer.choice);
+			console.log("New Department: " + answer.choice + ", has been added.")
+		})
 }
 
 async function deleteDepartments() {
@@ -148,14 +161,45 @@ async function deleteDepartments() {
 }
 
 async function viewRoles() {
-	console.log("view roles")
+	
 	const viewRoles = await db.findRoles();
 	console.table(viewRoles)
 	loadMainMenu();
 }
 
 async function addRoles() {
-	console.log("add roles")
+	const addRol = await db.findRoles();
+	console.table(addRol)
+	inquirer
+		.prompt([
+			{
+				name: "role",
+				type: "input",
+				message: "What is the new role?"
+
+			},
+			{
+				name: "salary",
+				type: "input",
+				message: "What is the salary for the new role?"
+
+			},
+			{
+				name: "choice",
+				type: "rawlist",
+				choices: () => {
+					let roleArr = [];
+					for (let i = 0; i < addRol.length; i++) {
+						roleArr.push(addRol[i].department_id)
+					}
+					return roleArr;
+				},
+				message: "Which department does the role belong to?"
+			},
+		])
+		.then(answer => {
+		
+		})
 }
 
 async function deleteRoles() {
@@ -166,8 +210,8 @@ async function deleteRoles() {
 			{
 				name: "role",
 				type: "rawlist",
-				choices: function () {
-					var roleArr = [];
+				choices: () => {
+					let roleArr = [];
 					for (let i = 0; i < roles.length; i++) {
 						roleArr.push(roles[i].title)
 					}
@@ -176,16 +220,16 @@ async function deleteRoles() {
 				message: "Which role would you like to delete?"
 			},
 		])
-		// .then(answer => {
-		// 	let delRole;
-		// 	for (let i = 0; i < roles.length; i++) {
-		// 		if (roles[i].title === answer.role) {
-		// 			delRole = roles[i].id;
-		// 		}
-		// 	}
-		// 	const deletedRole = db.destroyRole(delRole);
-		// 	loadMainMenu();
-		// })
+		.then(answer => {
+			let delRole;
+			for (let i = 0; i < roles.length; i++) {
+				if (roles[i].title === answer.role) {
+					delRole = roles[i].id;
+				}
+			}
+			const deletedRole = db.destroyRole(delRole);
+			loadMainMenu();
+		})
 
 	console.table(roles)
 }

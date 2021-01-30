@@ -23,14 +23,26 @@ class DB {
 		)
 	}
 
+	newDepartments(newDept) {
+		 return this.connection.query(
+			 "INSERT INTO department (name) Values (?)", [newDept]
+		 )
+	}
+
 	findRoles(){
 		return this.connection.query(
-			"SELECT id, title, salary FROM role"
+			"SELECT * FROM role"
+		)
+	}
+
+	newRoles(newRol) {
+		return this.connection.query(
+			"INSERT INTO department (name) values (?)", [newRol]
 		)
 	}
 
 	newEmployees(){
-		
+
 	}
 
 	destroyRole(id){
