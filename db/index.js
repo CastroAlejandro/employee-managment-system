@@ -13,7 +13,7 @@ class DB {
 
 	findEmployeesManager() {
 		return this.connection.query(
-			
+			"SELECT employee.first_name, employee.last_name, employee. FROM employee"
 		)
 	}
 
@@ -27,6 +27,17 @@ class DB {
 		return this.connection.query(
 			"SELECT id, title, salary FROM role"
 		)
+	}
+
+	newEmployees(){
+		
+	}
+
+	destroyRole(id){
+		return this.connection.query(
+			"DELETE FROM role WHERE id = (?)", 
+			[id],
+		);
 	}
 }
 

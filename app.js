@@ -77,7 +77,7 @@ function loadMainMenu() {
 				 ]
 			}
 		])
-		.then(function(answer) {
+		.then(answer => {
 			switch (answer.choice) {
 				case "VIEW_EMPLOYEES":
 					return viewEmployees();
@@ -119,7 +119,9 @@ async function viewEmployees() {
 }
 
 async function viewEmployeesByManager() {
-	console.log("view employees by manager")
+	const viewByManager = await db.findEmployeesManager();
+	console.table(viewByManager);
+	loadMainMenu();
 }
 
 async function addEmployees() {
@@ -157,7 +159,35 @@ async function addRoles() {
 }
 
 async function deleteRoles() {
-	console.log("delete roles")
+	
+	const roles = await db.findRoles();
+	inquirer
+		.prompt([
+			{
+				name: "role",
+				type: "rawlist",
+				choices: function () {
+					var roleArr = [];
+					for (let i = 0; i < roles.length; i++) {
+						roleArr.push(roles[i].title)
+					}
+					return roleArr;
+				},
+				message: "Which role would you like to delete?"
+			},
+		])
+		// .then(answer => {
+		// 	let delRole;
+		// 	for (let i = 0; i < roles.length; i++) {
+		// 		if (roles[i].title === answer.role) {
+		// 			delRole = roles[i].id;
+		// 		}
+		// 	}
+		// 	const deletedRole = db.destroyRole(delRole);
+		// 	loadMainMenu();
+		// })
+
+	console.table(roles)
 }
 
 async function updateRoles() {
