@@ -17,9 +17,15 @@ class DB {
 		)
 	}
 
-	findEmployeesManager() {
+	findDepartments() {
 		return this.connection.query(
-			
+			"SELECT * FROM department ORDER BY id"
+		)
+	}
+
+	findRoles(){
+		return this.connection.query(
+			"SELECT id, title, salary FROM role"
 		)
 	}
 }

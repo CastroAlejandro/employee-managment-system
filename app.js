@@ -92,11 +92,11 @@ function loadMainMenu() {
 				case "ADD_DEPARTMENTS": 
 					return addDepartments();
 				case "DELETE_DEPARTMENTS":
-					return addEmployees();
-				case "ADD_ROLES":
-					return addRoles();
+					return deleteDepartments();
 				case "VIEW_ROLES":
 					return viewRoles();
+				case "ADD_ROLES":
+					return addRoles();
 				case "DELETE_ROLES":
 					return deleteRoles();
 				case "UPDATE_EMPLOYEE_ROLES":
@@ -104,7 +104,7 @@ function loadMainMenu() {
 				case "UPDATE_EMPLOYEE_MANAGER":
 					return updateEmployeeManager();
 				case "VIEW_BUDGET":
-					return console.log("hello");
+					return viewBudget();
 				case "EXIT":
 					return connection.end();
 			}
@@ -128,16 +128,49 @@ async function addEmployees() {
 }
 
 async function deleteEmployees() {
-	console.log("delete employees")
+	
 }
 
-async function deleteEmployees() {
-	console.log("hello")
+async function viewDepartments() {
+	const viewDept = await db.findDepartments();
+	console.table(viewDept);
+	loadMainMenu();
 }
 
+async function addDepartments() {
+	console.log("add departments")
+}
 
+async function deleteDepartments() {
+	console.log("delete departments")
+}
 
+async function viewRoles() {
+	console.log("view roles")
+	const viewRoles = await db.findRoles();
+	console.table(viewRoles)
+	loadMainMenu();
+}
 
+async function addRoles() {
+	console.log("add roles")
+}
+
+async function deleteRoles() {
+	console.log("delete roles")
+}
+
+async function updateRoles() {
+	console.log("update roles")
+}
+
+async function updateEmployeeManager() {
+	console.log("update employee's manager")
+}
+
+async function viewBudget() {
+	console.log("budget total")
+}
 
 
 init();
