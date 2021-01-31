@@ -5,7 +5,7 @@ const connection = require("./db/connection");
 require("console.table");
 
 function init() {
-	const logoText = logo ({name: "Employee Manager"}).render();
+	const logoText = logo({ name: "Employee Manager" }).render();
 	console.log(logoText)
 	loadMainMenu();
 }
@@ -74,7 +74,7 @@ function loadMainMenu() {
 						name: "Exit",
 						value: "EXIT"
 					}
-				 ]
+				]
 			}
 		])
 		.then(answer => {
@@ -89,7 +89,7 @@ function loadMainMenu() {
 					return deleteEmployees();
 				case "VIEW_DEPARTMENTS":
 					return viewDepartments();
-				case "ADD_DEPARTMENTS": 
+				case "ADD_DEPARTMENTS":
 					return addDepartments();
 				case "DELETE_DEPARTMENTS":
 					return deleteDepartments();
@@ -125,13 +125,71 @@ async function viewEmployeesByManager() {
 }
 
 async function addEmployees() {
-	const employeeNew = await db.findRoles();
+	const addRol = await db.findRoles();
 	const manager = await db.findEmployeesManager();
+	inquirer
+		.prompt([
+			{
+				name: "first",
+				type: "input",
+				message: "What is the new employee's first name?"
 
+			},
+			{
+				name: "last",
+				type: "input",
+				message: "What is the new employee's last name?"
+
+			},
+			{
+				name: "choice",
+				type: "rawlist",
+				choices: () => {
+					let roleArr = [];
+					for (let i = 0; i < addRol.length; i++) {
+						roleArr.push(addRol[i].title)
+					}
+					return roleArr;
+				},
+				message: "What is the new employee's title?"
+			},
+			{
+				name: "empManager",
+				type: "rawlist",
+				choices: () => {
+					let roleArr = [];
+					for (let i = 0; i < manager.length; i++) {
+						roleArr.push(manager[i].first_name + manager[i].last_name);
+					}
+					return roleArr;
+				},
+				message: "Who is the new employee's manager?"
+			}
+		])
+		.then(answer => {
+			let addRole;
+			for (let i = 0; i < addRol.length; i++) {
+				if (addRol[i].title === answer.choice) {
+					addRole = addRol[i].id;
+				}
+			}
+			let employeeManager;
+			for (let i = 0; i < manager.length; i++) {
+				if (manager[i].first_name + " " + manager[i].last_name === answer.empManager) {
+					employeeManager = manager[i].id;
+				}
+			}
+
+			const newHire = db.newEmployees(answer.first, answer.last, addRole);
+			console.table(newHire)
+			loadMainMenu();
+		})
 }
 
+
+
 async function deleteEmployees() {
-	
+
 }
 
 async function viewDepartments() {
@@ -163,7 +221,7 @@ async function deleteDepartments() {
 }
 
 async function viewRoles() {
-	
+
 	const viewRoles = await db.findRoles();
 	console.table(viewRoles)
 	loadMainMenu();
@@ -205,7 +263,7 @@ async function addRoles() {
 					addRole = addRol[i].id;
 				}
 			}
-	
+
 			const updatedRole = db.newRoles(answer.role, answer.salary, addRole);
 			console.log("New role created: " + answer.role)
 			loadMainMenu();
@@ -213,7 +271,7 @@ async function addRoles() {
 }
 
 async function deleteRoles() {
-	
+
 	const roles = await db.findRoles();
 	inquirer
 		.prompt([
@@ -245,7 +303,28 @@ async function deleteRoles() {
 }
 
 async function updateRoles() {
-	console.log("update roles")
+	// { name: "What is displayed", value: "what is returned" }
+	let q = "SELECT id AS value, concat(id, ': ', first_name, ' ', last_name) AS name from employee"
+	const employees = await connection.query(q);
+	
+	const { employee_id } = await inquirer.prompt({
+		name: "employee_id",
+		type: "list",
+		choices: employees
+	})
+	
+	q = "SELECT r.id AS value, concat(name, ' ', title) AS name from role r LEFT JOIN department d ON r.department_id = d.id"
+	const roles = await connection.query(q);
+	const { role_id } = await inquirer.prompt({
+		name: "role_id",
+		type: "list",
+		choices: roles
+	})
+
+	q = "UPDATE employee SET role_id = ? WHERE id = ?"
+	
+	await connection.query(q, [role_id, employee_id])
+	loadMainMenu()
 }
 
 async function updateEmployeeManager() {

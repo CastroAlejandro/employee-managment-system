@@ -13,7 +13,7 @@ class DB {
 
 	findEmployeesManager() {
 		return this.connection.query(
-			"SELECT * FROM employee"
+			"SELECT manager_id FROM employee"
 		)
 	}
 
@@ -23,9 +23,9 @@ class DB {
 		)
 	}
 
-	newEmployees(w,x,y,z) {
+	newEmployees(a,b,c,d) {
 		return this.connection.query(
-			"INSERT INTO employee (first_name, last_name, role_id, manager_id) values (?, ?, ?, ?)", [w,x,y,z]
+			"INSERT INTO employee (first_name, last_name, role_id, manager_id) values (?, ?, ?, ?)", [a,b,c,d]
 		)
 	}
 
@@ -45,10 +45,6 @@ class DB {
 		return this.connection.query(
 			"INSERT INTO role (title, salary, department_id) values (?, ? , ?)", [x,y,z]
 		)
-	}
-
-	newEmployees(){
-
 	}
 
 	destroyRole(id){
