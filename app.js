@@ -125,7 +125,8 @@ async function viewEmployeesByManager() {
 }
 
 async function addEmployees() {
-	console.log("add employees")
+	const employeeNew = await db.findRoles();
+	const manager = await db.findEmployeesManager();
 
 }
 
@@ -153,6 +154,7 @@ async function addDepartments() {
 		.then(answer => {
 			const newDept = db.newDepartments(answer.choice);
 			console.log("New Department: " + answer.choice + ", has been added.")
+			loadMainMenu();
 		})
 }
 
@@ -168,8 +170,7 @@ async function viewRoles() {
 }
 
 async function addRoles() {
-	const addRol = await db.findRoles();
-	console.table(addRol)
+	const addRol = await db.findDepartments();
 	inquirer
 		.prompt([
 			{
@@ -190,7 +191,7 @@ async function addRoles() {
 				choices: () => {
 					let roleArr = [];
 					for (let i = 0; i < addRol.length; i++) {
-						roleArr.push(addRol[i].department_id)
+						roleArr.push(addRol[i].name)
 					}
 					return roleArr;
 				},
@@ -198,7 +199,16 @@ async function addRoles() {
 			},
 		])
 		.then(answer => {
-		
+			let addRole;
+			for (let i = 0; i < addRol.length; i++) {
+				if (addRol[i].name === answer.choice) {
+					addRole = addRol[i].id;
+				}
+			}
+	
+			const updatedRole = db.newRoles(answer.role, answer.salary, addRole);
+			console.log("New role created: " + answer.role)
+			loadMainMenu();
 		})
 }
 
